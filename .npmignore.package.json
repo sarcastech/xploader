@@ -1,0 +1,5 @@
+coverage/
+node_modules/
+metrics/
+*.sublime-project
+*.sublime-workspace

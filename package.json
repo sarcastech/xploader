@@ -1,0 +1,24 @@
+{
+  "name": "xploader",
+  "version": "1.0.0",
+  "description": "Application loader for ExpressJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarcastech/xploader.git"
+  },
+  "keywords": [
+    "express",
+    "autoload",
+    "boom"
+  ],
+  "author": "Sarcastech",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sarcastech/xploader/issues"
+  },
+  "homepage": "https://github.com/sarcastech/xploader#readme"
+}
