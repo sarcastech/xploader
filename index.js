@@ -1,19 +1,25 @@
 'use strict'
-
 let path = require('path')
-let moduleWhiteList = []
-let applicationPath
 
-let applyRoutes = function* (list) {
+function* applyRoutes (list) {
   for (let item of list) {
     yield item
   }
 }
 
-module.exports = function (express, callback) {
-  for (let m of applyRoutes(moduleWhiteList)) {
-    express.use(`/${m.replace('index', '')}`, require(path.join(applicationPath, m)))
+function loadApp (express, callback) {
+  for (let module of applyRoutes(this.moduleWhiteList)) {
+    express.use(`/${module.replace(this.homeDirectory, '')}`, require(path.join(this.applicationPath, module)))
   }
-
   callback()
 }
+
+function Xploader (config) {
+  this.moduleWhiteList = config.whiteList || []
+  this.applicationPath = config.applicationPath || `../app`
+  this.homeDirectory = config.home || 'index'
+
+  return loadApp.bind(this)
+}
+
+module.exports = Xploader
