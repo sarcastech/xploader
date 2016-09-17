@@ -1,5 +1,10 @@
 'use strict'
 let path = require('path')
+let defaults = Object.seal({
+  whiteList: [],
+  applicationPath: './app',
+  home: 'index'
+})
 
 function* applyRoutes (list) {
   for (let item of list) {
@@ -8,18 +13,16 @@ function* applyRoutes (list) {
 }
 
 function loadApp (express, callback) {
-  for (let appModule of applyRoutes(this.moduleWhiteList)) {
-    let resolvedPath = path.resolve(path.dirname(module.parent.filename), this.applicationPath, appModule)
-    express.use(`/${appModule.replace(this.homeDirectory, '')}`, require(resolvedPath))
+  let settings = this.config
+  for (let appModule of applyRoutes(settings.whiteList)) {
+    let resolvedPath = path.resolve(path.dirname(module.parent.filename), settings.applicationPath, appModule)
+    express.use(`/${appModule.replace(settings.homeDirectory, '')}`, require(resolvedPath))
   }
   callback()
 }
 
 function Xploader (config) {
-  this.moduleWhiteList = config.whiteList || []
-  this.applicationPath = config.applicationPath || `./app`
-  this.homeDirectory = config.home || 'index'
-
+  this.config = Object.assign(defaults, config)
   return loadApp.bind(this)
 }
 
