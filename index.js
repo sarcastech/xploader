@@ -1,6 +1,5 @@
 'use strict'
 let path = require('path')
-let process = require('process')
 
 function* applyRoutes (list) {
   for (let item of list) {
@@ -9,10 +8,9 @@ function* applyRoutes (list) {
 }
 
 function loadApp (express, callback) {
-  let cwd = process.cwd()
-  for (let module of applyRoutes(this.moduleWhiteList)) {
-    let resolvedPath = path.resolve(cwd, this.applicationPath, module)
-    express.use(`/${module.replace(this.homeDirectory, '')}`, require(resolvedPath))
+  for (let appModule of applyRoutes(this.moduleWhiteList)) {
+    let resolvedPath = path.resolve(path.dirname(module.parent.filename), this.applicationPath, appModule)
+    express.use(`/${appModule.replace(this.homeDirectory, '')}`, require(resolvedPath))
   }
   callback()
 }
