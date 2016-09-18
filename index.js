@@ -3,7 +3,7 @@ let path = require('path')
 let defaults = Object.seal({
   whiteList: [],
   applicationPath: './app',
-  home: 'index'
+  homeDirectory: 'index'
 })
 
 function* applyRoutes (list) {
@@ -13,16 +13,22 @@ function* applyRoutes (list) {
 }
 
 function loadApp (express, callback) {
-  let settings = this.config
-  for (let appModule of applyRoutes(settings.whiteList)) {
-    let resolvedPath = path.resolve(path.dirname(module.parent.filename), settings.applicationPath, appModule)
-    express.use(`/${appModule.replace(settings.homeDirectory, '')}`, require(resolvedPath))
-  }
-  callback()
+  return new Promise((resolve, reject) => {
+    try {
+      let settings = this.config
+      for (let appModule of applyRoutes(settings.whiteList)) {
+        let resolvedPath = path.resolve(path.dirname(module.parent.filename), settings.applicationPath, appModule)
+        express.use(`/${appModule.replace(settings.homeDirectory, '')}`, require(resolvedPath))
+      }
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
 }
 
 function Xploader (config) {
-  this.config = Object.assign(defaults, config || {})
+  this.config = Object.assign(defaults, config)
   return loadApp.bind(this)
 }
 
