@@ -22,7 +22,7 @@ function loadApp (express, callback) {
 }
 
 function Xploader (config) {
-  this.config = Object.assign(defaults, config)
+  this.config = Object.assign(defaults, config || {})
   return loadApp.bind(this)
 }
 
