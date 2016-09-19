@@ -12,7 +12,7 @@ function* applyRoutes (list) {
   }
 }
 
-function loadApp (express, callback) {
+function loadApp (express) {
   return new Promise((resolve, reject) => {
     try {
       let settings = this.config
